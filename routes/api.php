@@ -21,5 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('faixas',[FaixasController::class, 'index']);
-Route::get('faixas/{id}',[FaixasController::class, 'mostrarFaixasPorCategoria']);
-Route::post('add',[FaixasController::class, 'store']);
+Route::get('faixas/{id}',[FaixasController::class, 'mostrarFaixasPorId']);
+Route::post('faixas', [FaixasController::class, 'criarFaixas']);
+Route::put('faixas/{id}',[FaixasController::class,'alterarFaixas']);
+Route::delete('faixas/{id}',[FaixasController::class ,'deletarPorId']);
+Route::get('categoria/{id}',[FaixasController::class , 'mostrarCategoria']);
+Route::post('categoria',[FaixasController::class, 'criarCategoria']);
+Route::put('categoria/{id}', [FaixasController::class, 'alterarPorId']);
+Route::delete('categoria/{id}', [FaixasController::class , 'destroy']);

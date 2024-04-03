@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Faixas;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
-use App\Http\Requests\FaixasStoreRequest;
+
 
 class FaixasController extends Controller
 {
@@ -27,22 +27,17 @@ class FaixasController extends Controller
 
 
 
-    public function  mostrarFaixasPorCategoria($id)
+    public function  mostrarFaixasPorId($id)  {
+        $faixas = Faixas::find($id);
 
-    {
-
-        $faixas = Faixas::where('id_categoria', $id)->get();
-            if(!$faixas){
-                        return response()->json([
-                                'message' => 'Não há faixas para essa categoria'
-
-                        ],400);
-           
-                    }
-           
-                            return response()->json([
-                                'results' => $faixas
-                            ],200);
+        if(!$faixas){
+            return "faixas  não encontrada";
+            
+        }
+                    return response()->json([
+                              'results' => $faixas,
+                              'message' => 'Faixas encontradas'
+                            ]);
            
                       
 
@@ -50,7 +45,145 @@ class FaixasController extends Controller
 
     } 
 
+
+
+    public function  criarFaixas(Request $request){
+        $faixas = $request->all();
+
+        
+      //  $faixas['slug'] = Str::slug($request->nome);
+
+        $faixas = Faixas::create($faixas);
+
+     
+        return response()->json([
+            'faixas' => $faixas,
+            'mensagem' => 'faixa cadastrada com sucesso!',
+        ],200);
+
+    }
+
+
+
+
+    public function alterarFaixas($id, Request $request){
+
+        $faixas = Faixas::find($id);
+
+
+        if (!$faixas) {
+            throw new Exception("Faixas com ID $id não encontradas.");
+          }
+
+
+          $faixas->nome = $request->nome;
+          $faixas->album = $request->album;
+          $faixas->artista = $request->artista;
+
+
+          $faixas->save();
+
+
+          return response()->json([
+            'faixas' => $faixas,
+            'message' => 'Faixas alterada com sucesso!'
+          ]);
+
+    }
+
+
+
+
+
+
+    public function deletarPorId($id)
+    {
+
+        $faixas = Faixas::find($id);
+        $faixas->delete();
+
+
+        return response()->json([
+            'faixas' => $faixas,
+            'message' => 'Faixas excluida com sucesso!'
+        ], 200);
+    }
+
+
+
+
+
+
+
+
+    public function  mostrarCategoria($id){
+        $categoria = Categoria::find($id);
+        $faixas = Faixas::where('id_categoria', $id)->get();
+       
+        if(!$categoria){
+               return "categoria não encontrada"; 
+        }
+        return response()->json([
+            'results' => $categoria,$faixas,
+            'message' => 'Categoria encontrada'
+        ]);
+    }
+
+
+
+
+    public function  criarCategoria(Request $request){
+        $categoria = new Categoria();
+        $categoria->nome = $request->nome;
+        $categoria->descricao = $request->descricao;
+        $categoria->save();
+
+        return response()->json([
+            'results' => $categoria,
+            'message' => 'Categoria criada'
+        ]);
+
+    }
+  
     
+    public function destroy(string $id)
+    {
+     
+        $categoria = Categoria::find($id);
+        $categoria->delete();
+        
+
+        return response()->json([
+            'categoria' => $categoria,
+            'message' => 'Categoria excluida com sucesso!'
+        ], 200);
+    }
+
+
+        public function alterarPorId($id, Request $request){
+
+            $categoria = Categoria::find($id);
+           
+
+            if (!$categoria) {
+                throw new Exception("Categoria with ID $id not found."); 
+              }
+            
+             
+              $categoria->nome = $request->nome;
+              $categoria->descricao = $request->descricao;
+            
+      
+              $categoria->save();
+
+
+              return response()->json([
+                'categoria' => $categoria,
+                'message' => 'Categoria alterada com sucesso!'
+              ]);
+            
+        }
+
 
 
 
@@ -70,28 +203,7 @@ class FaixasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(FaixasStoreRequest $request)
-    {
-            try {
-                 Faixas::create([
-                    'nome' => $request->nome,
-                    'album' => $request->album,
-                    'artista' => $request->artista,
-                
-                 ]);
-
-                return response()->json([
-                        'message' => 'Faixa cadastrada com sucesso'
-                ],201);
-
-                    
-            } catch (\Exception $e) {
-                return response()->json([
-                        'message' => 'Erro ao cadastrar faixa',
-                ],500);
-            }
-    }
-
+  
     /**
      * Display the specified resource.
      *
@@ -132,8 +244,5 @@ class FaixasController extends Controller
      * @param  \App\Models\Faixas  $faixas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faixas $faixas)
-    {
-        //
-    }
+ 
 }
