@@ -57,7 +57,7 @@ class FaixasController extends Controller
 
      
         return response()->json([
-            'faixas' => $faixas,
+            'results' => $faixas,
             'mensagem' => 'faixa cadastrada com sucesso!',
         ],200);
 
@@ -85,7 +85,7 @@ class FaixasController extends Controller
 
 
           return response()->json([
-            'faixas' => $faixas,
+            'results' => $faixas,
             'message' => 'Faixas alterada com sucesso!'
           ]);
 
@@ -104,7 +104,7 @@ class FaixasController extends Controller
 
 
         return response()->json([
-            'faixas' => $faixas,
+            'results' => $faixas,
             'message' => 'Faixas excluida com sucesso!'
         ], 200);
     }
@@ -154,7 +154,7 @@ class FaixasController extends Controller
         
 
         return response()->json([
-            'categoria' => $categoria,
+            'results' => $categoria,
             'message' => 'Categoria excluida com sucesso!'
         ], 200);
     }
@@ -178,7 +178,7 @@ class FaixasController extends Controller
 
 
               return response()->json([
-                'categoria' => $categoria,
+                'results' => $categoria,
                 'message' => 'Categoria alterada com sucesso!'
               ]);
             
