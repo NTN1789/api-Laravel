@@ -25,6 +25,7 @@ Route::get('faixas/{id}',[FaixasController::class, 'mostrarFaixasPorId']);
 Route::post('faixas', [FaixasController::class, 'criarFaixas']);
 Route::put('faixas/{id}',[FaixasController::class,'alterarFaixas']);
 Route::delete('faixas/{id}',[FaixasController::class ,'deletarPorId']);
+Route::get('categoria', [FaixasController::class, 'mostrarTodasCategorias']);
 Route::get('categoria/{id}',[FaixasController::class , 'mostrarCategoria']);
 Route::post('categoria',[FaixasController::class, 'criarCategoria']);
 Route::put('categoria/{id}', [FaixasController::class, 'alterarPorId']);

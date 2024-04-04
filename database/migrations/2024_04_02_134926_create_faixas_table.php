@@ -16,11 +16,8 @@ return new class extends Migration
         Schema::create('faixas', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('album');
             $table->string('artista');
             $table->string('slug');
-
-
             $table->unsignedBigInteger('id_categoria');
             $table->foreign('id_categoria')->references('id')->on('categorias')->onDelete('cascade')->onUpdate('cascade'); 
             $table->timestamps();

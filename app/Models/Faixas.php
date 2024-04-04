@@ -13,7 +13,6 @@ class Faixas extends Model
 
         protected $fillable = [
                 'nome',
-                'album',
                 'artista',
                 'slug',
                 'id_categoria',

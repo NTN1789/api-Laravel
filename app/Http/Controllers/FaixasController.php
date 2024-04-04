@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Faixas;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class FaixasController extends Controller
@@ -77,7 +78,6 @@ class FaixasController extends Controller
 
 
           $faixas->nome = $request->nome;
-          $faixas->album = $request->album;
           $faixas->artista = $request->artista;
 
 
@@ -112,19 +112,47 @@ class FaixasController extends Controller
 
 
 
+    public function mostrarTodasCategorias(){
+        $categorias = Categoria::all();
+        $faixas = Faixas::all();
+
+
+        return response()->json([
+            'results' => $categorias,$faixas,
+            'message' => 'Categorias encontradas'
+        ]);
+    }
+
 
 
 
 
     public function  mostrarCategoria($id){
-        $categoria = Categoria::find($id);
-        $faixas = Faixas::where('id_categoria', $id)->get();
-       
-        if(!$categoria){
-               return "categoria não encontrada"; 
+        $validator = Validator::make(['id' => $id], ['id' => 'required|numeric']);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'ID da categoria inválido'
+            ], 400);
         }
+    
+        // Buscar a categoria e as faixas
+        try {
+            $categoria = Categoria::findOrFail($id);
+            $faixas = $categoria->faixas;
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Categoria não encontrada'
+            ], 404);
+        }
+    
+        // Retornar a categoria e as faixas em JSON
         return response()->json([
-            'results' => $categoria,$faixas,
+            'results' => 
+            $faixas,
+               $categoria,
+               
+            
             'message' => 'Categoria encontrada'
         ]);
     }
