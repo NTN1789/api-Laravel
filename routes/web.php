@@ -18,5 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::redirect('rota-a', 'rota-b');
+
+Route::get('users', function(){
+    return "Hello world!";
+})->name('users');
 //Route::get('/',[FaixasController::class, 'index'])->name('site.index');
 //Route::get('/categoria/{id}', [FaixasController::class, 'categoria'])->name('site.categoria');
